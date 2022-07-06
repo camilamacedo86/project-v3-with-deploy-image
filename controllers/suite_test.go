@@ -31,7 +31,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	examplecomv1alpha1 "github.com/camilamacedo86/project-v3-with-deploy-image/api/v1alpha1"
+	examplecomv1alpha1 "sigs.k8s.io/kubebuilder/testdata/project-v3-with-deploy-image/api/v1alpha1"
 	//+kubebuilder:scaffold:imports
 )
 

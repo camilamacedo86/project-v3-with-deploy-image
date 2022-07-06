@@ -19,7 +19,6 @@ package controllers
 import (
 	"fmt"
 	appsv1 "k8s.io/api/apps/v1"
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -30,7 +29,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	examplecomv1alpha1 "github.com/camilamacedo86/project-v3-with-deploy-image/api/v1alpha1"
+	examplecomv1alpha1 "sigs.k8s.io/kubebuilder/testdata/project-v3-with-deploy-image/api/v1alpha1"
 )
 
 var _ = Describe("Busybox controller", func() {
@@ -38,24 +37,11 @@ var _ = Describe("Busybox controller", func() {
 	// Define utility constants for object names and testing timeouts/durations and intervals.
 	const (
 		BusyboxName      = "test-busybox"
-		BusyboxNamespace = "test-busybox"
+		BusyboxNamespace = "default"
 	)
 
 	Context("Busybox controller test", func() {
 		ctx := context.Background()
-		ns := &corev1.Namespace{}
-		BeforeEach(func() {
-			ns = &corev1.Namespace{
-				ObjectMeta: metav1.ObjectMeta{Name: BusyboxName},
-			}
-			err := k8sClient.Create(ctx, ns)
-			Expect(err).NotTo(HaveOccurred(), "failed to create test namespace")
-		})
-
-		AfterEach(func() {
-			err := k8sClient.Delete(ctx, ns)
-			Expect(err).NotTo(HaveOccurred(), "failed to delete test namespace")
-		})
 
 		It("should create successfully the custom resource for the Busybox", func() {
 			By("Creating the custom resource for the Kind Busybox")
@@ -96,7 +82,7 @@ var _ = Describe("Busybox controller", func() {
 			By("Checking if the reconcile create the the Deployment")
 			Eventually(func() error {
 				found := &appsv1.Deployment{}
-				err = k8sClient.Get(ctx, types.NamespacedName{Name: busybox.Name, Namespace: busybox.Namespace}, found)
+				err = k8sClient.Get(ctx, types.NamespacedName{Name: BusyboxName, Namespace: BusyboxNamespace}, found)
 				if err != nil {
 					return err
 				}
@@ -104,5 +90,4 @@ var _ = Describe("Busybox controller", func() {
 			}, time.Minute, time.Second).Should(Succeed())
 		})
 	})
-
 })
