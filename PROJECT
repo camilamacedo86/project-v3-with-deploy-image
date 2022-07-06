@@ -1,0 +1,24 @@
+domain: testproject.org
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  deploy-image.go.kubebuilder.io/v1-alpha:
+    resources:
+    - domain: testproject.org
+      group: example.com
+      kind: Busybox
+      options:
+        image: busybox:1.28
+      version: v1alpha1
+projectName: project-v3-with-deploy-image
+repo: github.com/camilamacedo86/project-v3-with-deploy-image
+resources:
+- api:
+    crdVersion: v1
+  controller: true
+  domain: testproject.org
+  group: example.com
+  kind: Busybox
+  path: github.com/camilamacedo86/project-v3-with-deploy-image/api/v1alpha1
+  version: v1alpha1
+version: "3"
